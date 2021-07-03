@@ -4,32 +4,58 @@ canvas.height = 720;
 canvas.width = 720;
 canvas.style.border="1px solid black"
 document.getElementById("myCanvas").appendChild(canvas)
+let playerImg = document.getElementById("playerImg")
+let mummyImg = document.getElementById("mummyImg")
+let stairImg = document.getElementById("stairImg")
+let bgImg = document.getElementById("bgImg")
+
 
 let player = {
-    x: 0,
-    y:0
+    x: 4,
+    y:124,
+    dx: 120,
+    dy: 120
 
 }
 let mummy = {
-    x: 0,
-    y: 0
+    x: 124,
+    y: 120*5+4,
+    dx: 120,
+    dy: 120
 }
 
+let stair = {
+    x: 120*5, 
+    y: 120*2
+}
 
 function mainGame() {
     ctx.clearRect(0,0,720,720)
     drawBg()
     drawBarrier()
-
+    drawStair()
+    drawPlayer()
+    drawMummy()
+   
     
 }
-mainGame()
+setInterval(mainGame,10)
 
-function drawPlayer {
-    ctx.beginPath()
-    ctx.drawImage(./player.png,1)
-    ctx.closePath()
-}
+function update() {
+	
+	if (keysPressed['ArrowUp']) {
+		player.y -= 120;
+	}
+	if (keysPressed['ArrowDown']) {
+		player.y += 120;
+	}
+	if (keysPressed['ArrowLeft']) {
+		player.x -= 120;
+	}
+	if (keysPressed['ArrowRight']) {
+		player.x += 120;
+	}
+};
 function drawBarrier() {
     ctx.beginPath()
 
@@ -78,48 +104,45 @@ function drawBarrier() {
     
     
 }
-function drawBgLight(x,y){
+
+function drawBg() {
     ctx.beginPath()
-    ctx.rect(x,y,120,120)
-    ctx.fillStyle="#F8742F"
-    ctx.fill()
+    ctx.drawImage(bgImg,0,0,canvas.width,canvas.height)
     ctx.closePath()
     
 }
 
-function drawBgDark(x,y){
+function drawPlayer() {
     ctx.beginPath()
-    ctx.rect(x,y,120,120)
-    ctx.fillStyle="#D94C29"
-    ctx.fill()
+    ctx.drawImage(playerImg,player.x,player.y,115,115)
     ctx.closePath()
+ 
 }
-
-
-
-function drawBg() {
+function drawMummy() {
+    ctx.beginPath()
+    ctx.drawImage(mummyImg,mummy.x,mummy.y,115,115)
+    ctx.closePath()
    
-    let drawing = false
-        for (let y=0;y<=canvas.height;y+=120) {
-            console.log(y)
-            if (!drawing){
-                drawBgLight(0,y)
-                console.log("light")
-                drawing = !drawing
-            }else {
-                drawBgDark(0,y)
-                console.log("dark")
-                drawing = !drawing
-            }
-          for (let x=120;x<=canvas.width;x+=120) {
-            if (drawing){
-                drawBgDark(x,y)
-                drawing=!drawing
-            }else {
-                drawBgLight(x,y)
-                drawing=!drawing
-            }
-          }
-    }
+}
+function drawStair() {
+    ctx.beginPath()
+    ctx.drawImage(stairImg,stair.x,stair.y,120,120)
+    ctx.closePath()
+  
 }
 
+let keysPressed = {};
+function setupKeyboardListeners() {
+	
+	document.addEventListener('keydown',function (e) {
+			keysPressed[e.key] = true;
+		},
+		false
+	);
+
+	document.addEventListener('keyup',function (e) {
+			keysPressed[e.key] = false;
+		},
+		false
+	);
+}
