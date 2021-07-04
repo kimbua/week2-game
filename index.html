@@ -5,10 +5,38 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mummy Catch Chu'</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sigmar+One&display=swap" rel="stylesheet"> 
+    <script src="https://kit.fontawesome.com/0b70beae68.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="myCanvas"></div>
+    <div id="main">
+      <div id="outline">
+        <div id="container">
+          <div id="myCanvas"></div>
+        </div>
+        <div id="intro">
+          <h1>MUMMY MAZE</h1>
+          <p>What is your name, adventurer?</p>
+          <input type="text" id="playerName">
+          <button type="submit" onclick="insertName()">Start Game</button>
+          <br>
+          <br>          
+          <p>Get to the stairs before the Mummy catch you!</p>
+          <p>Use <i class="fas fa-arrow-up"></i> <i class="fas fa-arrow-down"> </i> <i class="fas fa-arrow-left"> </i> <i class="fas fa-arrow-right"></i> to move.</p>
+          <p>The Mummy  is 2 times faster than you!</p>
+          <p>Every step that you take, it takes 2!</p>
+          <p>The Mummy is fast, yet it is stupid. It always try to will get closer to you <u>horizontally</u> then <u>vertically</u>.</p>
+          <p>You can skip your turn  and let the Mummy move by pressing <img height="24px;" src="./Spacebar.jpg" alt=""></p>
+          <br>
+          <p style="font-size: 28px;">Try to escape this chamber, adventurer!</p>
+          <p>When you escape a chamber you will access to a harder one</p>
+        </div>
+      </div>
+      
+    </div>
     <div style="display:none">
         <img id="playerImg"
              src="player.png"
@@ -29,6 +57,7 @@
              src="floor6.jpg"
             >
       </div>
+      
     <script src="script.js" type="text/javascript"></script>
 </body>
 </html>

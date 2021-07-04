@@ -1,3 +1,39 @@
-#playerImg {
-    z-index: 10;
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0
+}
+#main {
+    height: 100vh;
+    width: 100vw;
+    font-family: 'Sigmar One', cursive;
+    background-image: url(./background.jpg);
+    background-position: center;
+}
+    
+#outline {
+    height:100%;
+    margin: 0 10%;
+    display: flex;
+    justify-content: space-between  ;
+    color:white;
+    text-shadow: 2px 2px rgb(224, 197, 108);
+}
+#main h1 {
+   
+   font-size: 64px;
+}
+#main p {
+    font-size: 24px
+}
+#intro {
+    text-align: left;
+    flex-basis: 50%;
+}
+#container {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
 }
