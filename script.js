@@ -5,15 +5,19 @@ canvas.width = 720;
 canvas.style.border="1px solid black"
 document.getElementById("myCanvas").appendChild(canvas)
 let gameOver=false
+let gameOver2=false
 let input = document.getElementById("playerName")
 let bg = {
     image : new Image(),
     ready: false
 }
-
+let trap ={
+    image: new Image(),
+    ready: false
+}
 let player = {
-    x: 4,
-    y:124,
+    x: 120*2+4,
+    y:120*2+4,
     dx: 120,
     dy: 120,
     image : new Image(),
@@ -22,14 +26,14 @@ let player = {
 }
 
 let mummy = {
-    x: 124,
-    y: 120*5+4,
+    x: 120*2+4,
+    y: 120*3+4,
     image : new Image(),
     ready: false
 }
 let stair = {
-    x: 120*5, 
-    y: 120*2,
+    x: 0,   
+    y: 120*4+4,
     image : new Image(),
     ready: false
 }
@@ -60,16 +64,12 @@ function drawBarrier() {
 
     // vertical barriers
 
-    ctx.rect(120*3-4,120,8,120)
+    ctx.rect(120*2-4,120,8,120)
     ctx.fillStyle="#704B37"
     ctx.fill()
 
    
-    ctx.rect(116,120*2,8,120)
-    ctx.fillStyle="#704B37"
-    ctx.fill()
-
-    ctx.rect(120*4-4,120*2,8,120)
+    ctx.rect(120*2-4,120*3,8,120)
     ctx.fillStyle="#704B37"
     ctx.fill()
 
@@ -77,17 +77,45 @@ function drawBarrier() {
     ctx.fillStyle="#704B37"
     ctx.fill()
 
+    ctx.rect(120*4-4,120,8,120)
+    ctx.fillStyle="#704B37"
+    ctx.fill()
+
+    ctx.rect(120*4-4,120*3,8,120)
+    ctx.fillStyle="#704B37"
+    ctx.fill()
+
+    ctx.rect(120*4-4,120*4,8,120)
+    ctx.fillStyle="#704B37"
+    ctx.fill()
+
+    ctx.rect(120*5-4,120,8,120)
+    ctx.fillStyle="#704B37"
+    ctx.fill()
+
     ctx.rect(120*5-4,120*4,8,120)
+    ctx.fillStyle="#704B37"
+    ctx.fill()
+
+    ctx.rect(120*3-4,120*5,8,120)
     ctx.fillStyle="#704B37"
     ctx.fill()
     
     // horizontal barriers
 
-    ctx.rect(120*2,116,124,8)
+    ctx.rect(0,116,120,8)
     ctx.fillStyle="#704B37"
     ctx.fill()
 
-    ctx.rect(120*4-4,120*2-4,124,8)
+    ctx.rect(0,120*2-4,120,8)
+    ctx.fillStyle="#704B37"
+    ctx.fill()
+
+    ctx.rect(120,120*2-4,124,8)
+    ctx.fillStyle="#704B37"
+    ctx.fill()
+
+    ctx.rect(0,120*4-4,120,8)
     ctx.fillStyle="#704B37"
     ctx.fill()
 
@@ -95,7 +123,23 @@ function drawBarrier() {
     ctx.fillStyle="#704B37"
     ctx.fill()
 
-    ctx.rect(120*5-4,120*4-4,124,8)
+    ctx.rect(120*3,120-4,124,8)
+    ctx.fillStyle="#704B37"
+    ctx.fill()
+
+    ctx.rect(120*3,120*2-4,124,8)
+    ctx.fillStyle="#704B37"
+    ctx.fill()
+
+    ctx.rect(120*3,120*3-4,124,8)
+    ctx.fillStyle="#704B37"
+    ctx.fill()
+
+    ctx.rect(120*5-4,120*2-4,124,8)
+    ctx.fillStyle="#704B37"
+    ctx.fill()
+
+    ctx.rect(120*5-4,120*5-4,124,8)
     ctx.fillStyle="#704B37"
     ctx.fill()
 
@@ -103,6 +147,7 @@ function drawBarrier() {
     
     
 }
+
 function loadImages() {
 
     bg.image.src = '/floor6.jpg';
@@ -125,18 +170,30 @@ function loadImages() {
     stair.image.onload = function () {
 		stair.ready = true;
 	};
-	
+	trap.image.src = "/trap6.gif"
+    trap.image.onload = function () {
+		trap.ready = true;
+	};
 }
 function render() {
+    if (gameOver) {
+        return
+    }
 	if (bg.ready) {
 		
         ctx.drawImage(bg.image,0,0,canvas.width,canvas.height)
         
 	}
     drawBarrier()
+    
     if (stair.ready) {
 		
-        ctx.drawImage(stair.image,stair.x,stair.y,120,120)
+        ctx.drawImage(stair.image,stair.x,stair.y,120,116)
+     
+	}
+    if (trap.ready) {
+		
+        ctx.drawImage(trap.image,0,0,120,116)
      
 	}
 	if (player.ready) {
@@ -181,47 +238,74 @@ let leftClear = true
 let upClear = true
 let downClear = true 
 function mummyBorderDectect() {
-    if (mummy.x==4 && mummy.y == 120*2+4) {
-        rightClear = false
+    if (mummy.x==4 && mummy.y == 120+4) {
+        upClear=false
+        downClear=false
+    }else if (mummy.x==4 && mummy.y == 120*2+4) {
+        upClear=false
+      
+    }else if (mummy.x==124 && mummy.y == 124) {
+        rightClear=false
+        downClear=false
     }else if (mummy.x==124 && mummy.y == 120*2+4) {
-        leftClear = false
-    }else if (mummy.x==124 && mummy.y == 120*4+4) {
-        rightClear = false
         upClear=false
-        
-    }else if (mummy.x==124 && mummy.y == 120*3+4) {
-       
-        downClear=false
-    }else if (mummy.x==120*2+4 && mummy.y == 120*4+4) {
-       
-        leftClear=false
     }else if (mummy.x==120*2+4 && mummy.y == 120+4) {
-        upClear=false
+        leftClear=false
+    }else if (mummy.x==120*3+4 && mummy.y == 120+4) {
         rightClear=false
-    }else if (mummy.x==120*2+4 && mummy.y == 4) {
-       
+        upClear=false
         downClear=false
-    }else if (mummy.x==120*3+4 && mummy.y == 124) {
-       
-       leftClear=false
+    }else if (mummy.x==120*4+4 && mummy.y == 120+4) {
+        leftClear=false 
+        rightClear=false
+    }else if (mummy.x==120*3+4 && mummy.y == 4) {
+        downClear=false 
     }else if (mummy.x==120*3+4 && mummy.y == 120*2+4) {
+        upClear=false 
+        downClear=false
+    }else if (mummy.x==120*5+4 && mummy.y == 120+4) {
+        leftClear=false 
+        downClear=false
+    }else if (mummy.x==120*5+4 && mummy.y == 120*2+4) {
        
-        rightClear=false
-    }else if (mummy.x==120*4+4 && mummy.y == 124) {
+        upClear=false
+    }
+    else if (mummy.x==4 && mummy.y == 120*3+4) {
        
         downClear=false
-    }else if (mummy.x==120*4+4 && mummy.y == 120*2+4) {
+    }else if (mummy.x==124 && mummy.y == 120*3+4) {
+        rightClear=false
+        downClear=false
+    }else if (mummy.x==124 && mummy.y == 120*4+4) {
+        rightClear=false
         upClear=false
+    }else if (mummy.x==120*2+4 && mummy.y == 120*4+4) {
         leftClear=false
-    }else if (mummy.x==120*5+4 && mummy.y == 120*4+4) {
+        
+    }else if (mummy.x==120*2+4 && mummy.y == 120*3+4) {
+        leftClear=false
+        
+    }else if (mummy.x==120*3+4 && mummy.y == 120*3+4) {
+        rightClear=false
         upClear=false
-        leftClear=false
+        
+    }else if (mummy.x==120*3+4 && mummy.y == 120*4+4) {
+        rightClear=false
+        
+    }else if (mummy.x==120*4+4 && mummy.y == 120*4+3) {
+        leftClear=false 
     }else if (mummy.x==120*4+4 && mummy.y == 120*4+4) {
-        
+        leftClear=false 
         rightClear=false
-    }else if (mummy.x==120*5+4 && mummy.y == 120*3+4) {
-        
+    }else if (mummy.x==120*5+4 && mummy.y == 120*4+4) {
+        leftClear=false 
         downClear=false
+    }else if (mummy.x==120*2+4 && mummy.y == 120*5+4) {
+        rightClear=false 
+    }else if (mummy.x==120*3+4 && mummy.y == 120*5+4) {
+        leftClear=false 
+    }else if (mummy.x==120*5+4 && mummy.y == 120*5+4) {
+        upClear=false 
     }else {
         rightClear = true
         leftClear = true
@@ -229,6 +313,7 @@ function mummyBorderDectect() {
         downClear = true 
     }
 }
+
 function mummyMove() {
     mummyBorderDectect()
     if (player.x == mummy.x) {
@@ -529,65 +614,100 @@ function mummyMove() {
 }
 
 function borderDetect() {
-    // 1
+
+    if (player.x==4 && player.y == 120+4) {
+        upPressed=false
+        downPressed=false
+    }
     if (player.x==4 && player.y == 120*2+4) {
+        upPressed=false
+      
+    }
+    if (player.x==124 && player.y == 124) {
         rightPressed=false
+        downPressed=false
     }
     if (player.x==124 && player.y == 120*2+4) {
+        upPressed=false
+    }
+    if (player.x==120*2+4 && player.y == 120+4) {
         leftPressed=false
     }
-    //2
+    if (player.x==120*3+4 && player.y == 120+4) {
+        rightPressed=false
+        upPressed=false
+        downPressed=false
+    }
+    if (player.x==120*4+4 && player.y == 120+4) {
+        leftPressed=false 
+        rightPressed=false
+    }
+    if (player.x==120*3+4 && player.y == 4) {
+        downPressed=false 
+    }
+    if (player.x==120*3+4 && player.y == 120*2+4) {
+        upPressed=false 
+        downPressed=false
+    }
+    if (player.x==120*5+4 && player.y == 120+4) {
+        leftPressed=false 
+        downPressed=false
+    }
+    if (player.x==120*5+4 && player.y == 120*2+4) {
+       
+        upPressed=false
+    }
+    
+    if (player.x==4 && player.y == 120*3+4) {
+       
+        downPressed=false
+    }
+    if (player.x==124 && player.y == 120*3+4) {
+        rightPressed=false
+        downPressed=false
+    }
     if (player.x==124 && player.y == 120*4+4) {
         rightPressed=false
         upPressed=false
     }
-    if (player.x==124 && player.y == 120*3+4) {
-       
-        downPressed=false
-    }
     if (player.x==120*2+4 && player.y == 120*4+4) {
-       
         leftPressed=false
+        
     }
-    // 3
-    if (player.x==120*2+4 && player.y == 120+4) {
-        upPressed=false
+    if (player.x==120*2+4 && player.y == 120*3+4) {
+        leftPressed=false
+        
+    }
+    if (player.x==120*3+4 && player.y == 120*3+4) {
         rightPressed=false
+        upPressed=false
+        
     }
-    if (player.x==120*2+4 && player.y == 4) {
-       
-        downPressed=false
-    }
-    if (player.x==120*3+4 && player.y == 124) {
-       
-       leftPressed=false
-    }
-    // 4
-    if (player.x==120*3+4 && player.y == 120*2+4) {
-       
+    if (player.x==120*3+4 && player.y == 120*4+4) {
         rightPressed=false
-     }
-     if (player.x==120*4+4 && player.y == 124) {
-       
-        downPressed=false
-     }
-     if (player.x==120*4+4 && player.y == 120*2+4) {
-        upPressed=false
-        leftPressed=false
-     }
-    // 5
-    if (player.x==120*5+4 && player.y == 120*4+4) {
-        upPressed=false
-        leftPressed=false
+        
+    }
+    if (player.x==120*4+4 && player.y == 120*4+3) {
+        leftPressed=false 
     }
     if (player.x==120*4+4 && player.y == 120*4+4) {
-        
+        leftPressed=false 
         rightPressed=false
     }
-    if (player.x==120*5+4 && player.y == 120*3+4) {
-        
+    if (player.x==120*5+4 && player.y == 120*4+4) {
+        leftPressed=false 
         downPressed=false
     }
+    if (player.x==120*2+4 && player.y == 120*5+4) {
+        rightPressed=false 
+    }
+    if (player.x==120*3+4 && player.y == 120*5+4) {
+        leftPressed=false 
+    }
+    if (player.x==120*5+4 && player.y == 120*5+4) {
+        upPressed=false 
+    }
+        
 }
 
 function update() {
@@ -647,25 +767,24 @@ function update() {
     }else if (mummy.y >= canvas.width){
         mummy.y = canvas.height -116
     }
-    if (player.x==stair.x+4 && player.y == stair.y+4){
-        alert("You have escaped the chamber!! You are now move to the next one!!")
+    if (player.x==stair.x+4 && player.y == stair.y){
+        alert("You have escaped the chamber!!")
         gameOver=true
     }
     if (player.x==mummy.x && player.y == mummy.y){
         alert("Mummy caught chu'!!! Try again!")
         document.location.reload()
     }
+    if (player.x==mummy.x && player.y == mummy.y){
+        alert("You died! Told you not to step on the Pharaoh damn trap!")
+        document.location.reload()
+    }
 }
-	
-
 
 function mainGame() {
     ctx.clearRect(0,0,720,720)
     update()
     render()
-    console.log(player.x,player.y)
-    console.log(mummy.x,mummy.y)
-    
     requestAnimationFrame(mainGame)
    
 }
